@@ -77,6 +77,7 @@ public class CustomerReader
             final String    postalCode;
             final String    email;
             final String    phoneNumber;
+
             final LocalDate         joinDate;
             final DateTimeFormatter formatter;
 

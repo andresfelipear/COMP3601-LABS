@@ -58,7 +58,13 @@ public class Validator
         return email.matches(REGEX_VALID_EMAIL);
     }
 
-
+    /**
+     * Formats the given LocalDate into a string based on the provided format pattern.
+     *
+     * @param date The LocalDate to be formatted.
+     * @param format The format pattern to be applied.
+     * @return A string representation of the date in the specified format.
+     */
     public static String getDateFormatted(final LocalDate date, final String format)
     {
         final DateTimeFormatter formatter;

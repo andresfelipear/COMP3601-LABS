@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class CustomerReport
 {
     /**
-     * Prints a formatted customer report to the console.
+     * Prints a formatted customer report to the console, including the duration of the report generation.
      *
      * @param customers an ArrayList of Customer objects to be included in the report.
      */
@@ -42,6 +42,7 @@ public class CustomerReport
                           CustomerDetails.EMAIL,
                           CustomerDetails.JOIN_DATE);
         System.out.println("\n--------------------------------------------------------------------------------------------------------------------------------------------------");
+
         customers.sort(new CompareByJoinedDate());
         customers.forEach(System.out::println);
 
