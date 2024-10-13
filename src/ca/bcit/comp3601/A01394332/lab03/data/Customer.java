@@ -155,7 +155,6 @@ public class Customer
          */
         public Customer build()
         {
-            LOG.info("Building a Customer instance with ID: {}", id);
             return new Customer(this);
         }
     }
@@ -177,7 +176,6 @@ public class Customer
         joinDate = builder.joinDate;
         phoneNumber = builder.phoneNumber;
 
-        LOG.info("Customer created: {}", this);
     }
 
 
@@ -268,7 +266,6 @@ public class Customer
      */
     public void setStreetName(final String streetName)
     {
-        LOG.debug("Setting street name for Customer ID {}: {}", id, streetName);
         this.streetName = streetName;
     }
 
@@ -279,7 +276,6 @@ public class Customer
      */
     public void setCity(final String city)
     {
-        LOG.debug("Setting city for Customer ID {}: {}", id, city);
         this.city = city;
     }
 
@@ -290,7 +286,6 @@ public class Customer
      */
     public void setPostalCode(final String postalCode)
     {
-        LOG.debug("Setting postal code for Customer ID {}: {}", id, postalCode);
         this.postalCode = postalCode;
     }
 
@@ -301,7 +296,6 @@ public class Customer
      */
     public void setEmail(final String email)
     {
-        LOG.debug("Setting email for Customer ID {}: {}", id, email);
         this.email = email;
     }
 
@@ -312,7 +306,6 @@ public class Customer
      */
     public void setJoinDate(final LocalDate joinDate)
     {
-        LOG.debug("Setting join date for Customer ID {}: {}", id, joinDate);
         this.joinDate = joinDate;
     }
 
@@ -323,7 +316,6 @@ public class Customer
      */
     public void setPhoneNumber(final String phoneNumber)
     {
-        LOG.debug("Setting phone number for Customer ID {}: {}", id, phoneNumber);
         this.phoneNumber = phoneNumber;
     }
 
