@@ -5,6 +5,7 @@ import ca.bcit.comp3601.A01394332.lab03.data.Customer;
 import ca.bcit.comp3601.A01394332.lab03.io.CustomerReader;
 import ca.bcit.comp3601.A01394332.lab03.io.CustomerReport;
 import ca.bcit.comp3601.A01394332.lab03.logging.log4j.LoggingConfiguration;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
@@ -18,17 +19,16 @@ import java.util.ArrayList;
 public class Lab3
 {
 
-    private static final Logger LOG;
+    private static Logger LOG;
 
     static
     {
-        LOG = LoggingConfiguration.getLOG();
+        LoggingConfiguration.configureLogging();
+        LOG = LogManager.getLogger(LoggingConfiguration.class);
     }
 
     public static void main(String[] args)
     {
-        LoggingConfiguration.configureLogging();
-
         if(args.length == 0)
         {
             LOG.error("Usage: must provide customer info as a command argument");

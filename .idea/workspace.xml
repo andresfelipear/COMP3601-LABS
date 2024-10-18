@@ -1,30 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="A01394332:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c717396-a058-410f-9fe4-804c318b730a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/log4j_api_2_10_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lab03.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/log4j-api-2.10.0.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/log4j-core-2.10.0.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/log4j2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/Lab3.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/data/ApplicationException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/data/Customer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/data/CustomerDetails.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/data/util/Validator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/io/CompareByJoinedDate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/io/CustomerReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/io/CustomerReport.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/logging/log4j/LoggingConfiguration.java" afterDir="false" />
+    <list default="true" id="2c717396-a058-410f-9fe4-804c318b730a" name="Changes" comment="lab02 3601. Removed info &amp; debug logs">
+      <change afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/Lab3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/Lab3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/logging/log4j/LoggingConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/logging/log4j/LoggingConfiguration.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,9 +31,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
-}]]></component>
+  <component name="JvmLoggingSettingsStorage">
+    <option name="loggerId" value="Log4j2" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="2nMHei7beiCFEIHS4DlsoIz156M" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -52,32 +45,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.BasicLogging.executor": "Run",
-    "Application.Lab03.executor": "Run",
-    "Application.LoggingConfiguration.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Documents/BCIT/Term4/COMP3601/day3/lab03/lab03/lib/log4j-core-2.10.0.jar",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "D:/Documents/BCIT/Term4/COMP3601/day3/lab03/lab03/src/Main.java",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.BasicLogging.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Lab03.executor&quot;: &quot;Run&quot;,
+    &quot;Application.LoggingConfiguration.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Documents/BCIT/Term4/COMP3601/day3/lab03/lab03/log4j2.xml&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;D:/Documents/BCIT/Term4/COMP3601/day3/lab03/lab03/src/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Documents\BCIT\Term4\COMP3601\day3\lab03\lab03\src\ca\bcit\comp3601\A01394332\lab03\logging\log4j" />
       <recent name="D:\Documents\BCIT\Term4\COMP3601\day3\lab03\lab03" />
       <recent name="D:\Documents\BCIT\Term4\COMP3601\day3\lab03\lab03\src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Documents\BCIT\Term4\COMP3601\day3\lab03\lab03" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="ca.bcit.comp3601.A01394332.lab03.logging.log4j" />
@@ -131,11 +128,45 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1728776121977</updated>
-      <workItem from="1728776122995" duration="13019000" />
+      <workItem from="1728776122995" duration="15660000" />
+      <workItem from="1728935480319" duration="7145000" />
+      <workItem from="1729128847348" duration="42000" />
+      <workItem from="1729283914359" duration="379000" />
     </task>
+    <task id="LOCAL-00001" summary="lab02 3601. Adding logging using Log4j">
+      <option name="closed" value="true" />
+      <created>1728811656044</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1728811656044</updated>
+    </task>
+    <task id="LOCAL-00002" summary="lab02 3601. Updated docstrings">
+      <option name="closed" value="true" />
+      <created>1728812097078</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1728812097078</updated>
+    </task>
+    <task id="LOCAL-00003" summary="lab02 3601. Removed info &amp; debug logs">
+      <option name="closed" value="true" />
+      <created>1728812196442</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1728812196442</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="lab02 3601. Adding logging using Log4j" />
+    <MESSAGE value="lab02 3601. Updated docstrings" />
+    <MESSAGE value="lab02 3601. Removed info &amp; debug logs" />
+    <option name="LAST_COMMIT_MESSAGE" value="lab02 3601. Removed info &amp; debug logs" />
   </component>
 </project>
