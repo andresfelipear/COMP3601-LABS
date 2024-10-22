@@ -3,9 +3,8 @@ package ca.bcit.comp3601.A01394332.lab03.io;
 import ca.bcit.comp3601.A01394332.lab03.data.Customer;
 import ca.bcit.comp3601.A01394332.lab03.data.CustomerDetails;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * CustomerReport
@@ -22,20 +21,15 @@ public class CustomerReport
      */
     public static void printCustomerReport(final ArrayList<Customer> customers)
     {
-        final LocalDateTime timestampStart;
-        final LocalDateTime timestampEnd;
-        final Duration      duration;
 
-        timestampStart = LocalDateTime.now();
-        System.out.println(timestampStart);
 
         System.out.println("Customer Report");
         System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.printf("#. %-4s  %-10s %-13s %-25s %-13s %-12s %-15s %-25s %-12s",
-                          CustomerDetails.ID,
+                          "ID",
                           CustomerDetails.FIRST_NAME,
                           CustomerDetails.LAST_NAME,
-                          CustomerDetails.STREET_NAME,
+                          CustomerDetails.STREET,
                           CustomerDetails.CITY,
                           CustomerDetails.POSTAL_CODE,
                           CustomerDetails.PHONE_NUMBER,
@@ -45,11 +39,19 @@ public class CustomerReport
 
         customers.sort(new CompareByJoinedDate());
         customers.forEach(System.out::println);
+    }
 
-        timestampEnd = LocalDateTime.now();
-        System.out.println(timestampEnd);
-
-        duration = Duration.between(timestampStart, timestampEnd);
-        System.out.println("Duration: " + duration.toMillis() + " ms");
+    /**
+     * Prints the number of customer IDs loaded from the database and the list of customer IDs.
+     *
+     * The method uses `System.out.printf` to print the count of IDs and then prints the actual list of IDs
+     * by converting the provided list to a string using `toString()`.
+     *
+     * @param ids A List of customer ID strings to be printed.
+     */
+    public static void printIds(List<String> ids)
+    {
+        System.out.printf("Loaded %d customer IDs from the database\n", ids.size());
+        System.out.println("Customer IDs:" + ids.toString());
     }
 }
