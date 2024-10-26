@@ -1,9 +1,6 @@
 package ca.bcit.comp3601.A01394332.lab03.data;
 
 import ca.bcit.comp3601.A01394332.lab03.data.util.Validator;
-import ca.bcit.comp3601.A01394332.lab03.logging.log4j.LoggingConfiguration;
-import org.apache.logging.log4j.Logger;
-
 
 import java.time.LocalDate;
 
@@ -16,7 +13,7 @@ import java.time.LocalDate;
 public class Customer
 {
     private static final String DATE_FORMAT;
-    private static final Logger LOG;
+    public static final int     ATTRIBUTE_COUNT;
 
     private final String id;
     private final String firstName;
@@ -31,8 +28,8 @@ public class Customer
 
     static
     {
-        DATE_FORMAT = "MMM dd yyyy";
-        LOG         = LoggingConfiguration.getLOG();
+        DATE_FORMAT     = "MMM dd yyyy";
+        ATTRIBUTE_COUNT = 9;
     }
 
     /**
@@ -178,6 +175,10 @@ public class Customer
 
     }
 
+    public String getId()
+    {
+        return id;
+    }
 
     /**
      * Gets the Customer's first name.
@@ -337,5 +338,26 @@ public class Customer
                               phoneNumber,
                               email,
                               Validator.getDateFormatted(joinDate, DATE_FORMAT));
+    }
+
+    /**
+     * Returns a formatted string representing the details of the customer.
+     * The string includes the customer's ID, first name, last name, street, city, postal code, phone number, email address, and join date.
+     *
+     * @return a string in the format: Customer[id='...', firstName='...', lastName='...', street='...', city='...', postalCode='...', phone='...', emailAddress='...', joinDate=...]
+     */
+    public String getStringDetails()
+    {
+        return "Customer[" +
+                "id='" + id +
+                ", firstName='" + firstName +
+                ", lastName='" + lastName +
+                ", street='" + streetName +
+                ", city='" + city +
+                ", postalCode='" + postalCode +
+                ", phone='" + phoneNumber +
+                ", emailAddress='" + email +
+                ", joinDate=" + joinDate +
+                ']';
     }
 }

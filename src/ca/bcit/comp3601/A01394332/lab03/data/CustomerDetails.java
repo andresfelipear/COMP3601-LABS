@@ -11,21 +11,30 @@ package ca.bcit.comp3601.A01394332.lab03.data;
  */
 public enum CustomerDetails
 {
-    ID(0, "ID"), FIRST_NAME(1, "First Name"), LAST_NAME(2, "last Name"),
-    STREET_NAME(3, "Street"), CITY(4, "City"), POSTAL_CODE(5, "Postal Code"),
-    PHONE_NUMBER(6, "Phone"), EMAIL(7, "Email"), JOIN_DATE(8, "Join Date");
+    CUSTOMER_ID(0, "customerId", "VARCHAR", 9 ),
+    FIRST_NAME(1, "firstName", "VARCHAR", 20 ),
+    LAST_NAME(2, "lastName", "VARCHAR", 20 ),
+    STREET(3, "street", "VARCHAR", 40 ),
+    CITY(4, "city", "VARCHAR", 15 ),
+    POSTAL_CODE(5, "postalCode", "VARCHAR", 10 ),
+    PHONE_NUMBER(6, "phoneNumber", "VARCHAR", 10 ),
+    EMAIL(7, "email", "VARCHAR", 30 ),
+    JOIN_DATE(8, "dateJoined", "DATE", -1);
 
-    private final String description;
-    private final int    value;
+    private final String name;
+    private final String type;
+    private final int    length;
+    private final int    index;
+
 
     /**
      * Retrieves the integer index associated with the customer detail.
      *
      * @return the index value of the detail.
      */
-    public int getValue()
+    public int getIndex()
     {
-        return value;
+        return index;
     }
 
     /**
@@ -33,20 +42,22 @@ public enum CustomerDetails
      *
      * @return the description of the detail.
      */
-    public String getDescription()
+    public String getName()
     {
-        return description;
+        return name;
     }
 
     /**
-     * Constructor for CustomerDetails enum that initializes the index and description.
+     * Constructor for CustomerDetails enum that initializes the index and name.
      *
-     * @param value       The index position of the customer detail.
-     * @param description The description of the customer detail.
+     * @param index       The index position of the customer detail.
+     * @param name The name of the customer detail.
      */
-    CustomerDetails(final int value, final String description)
+    CustomerDetails(final int index, final String name, final String type, final int length)
     {
-        this.value = value;
-        this.description = description;
+        this.index = index;
+        this.name = name;
+        this.type = type;
+        this.length = length;
     }
 }

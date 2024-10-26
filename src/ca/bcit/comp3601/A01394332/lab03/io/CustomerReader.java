@@ -4,11 +4,12 @@ import ca.bcit.comp3601.A01394332.lab03.data.ApplicationException;
 import ca.bcit.comp3601.A01394332.lab03.data.Customer;
 import ca.bcit.comp3601.A01394332.lab03.data.CustomerDetails;
 import ca.bcit.comp3601.A01394332.lab03.data.util.Validator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * CustomerReader
@@ -18,18 +19,20 @@ import java.util.Arrays;
  */
 public class CustomerReader
 {
-    private static final String SPLIT_CHAR;
+    public static final String  SPLIT_CHAR_LINE;
+    public static final String  FORMATTER_DATE;
     private static final String SPLIT_CHAR_CUSTOMER_DETAILS;
-    private static final String FORMATTER_DATE;
+    private static final Logger LOG;
 
-    private final String string;
+    private final String stringOfFile;
     private final ArrayList<Customer> customers;
 
     static
     {
-        SPLIT_CHAR                  = ":";
+        SPLIT_CHAR_LINE             = ":";
         SPLIT_CHAR_CUSTOMER_DETAILS = "\\|";
         FORMATTER_DATE              = "yyyyMMdd";
+        LOG                         = LogManager.getLogger(CustomerReader.class);
     }
 
     /**
@@ -39,7 +42,7 @@ public class CustomerReader
      */
     public CustomerReader(final String string)
     {
-        this.string = string;
+        this.stringOfFile = string;
         customers = new ArrayList<>();
     }
 
@@ -62,7 +65,7 @@ public class CustomerReader
 
     {
         final String[] stringCostumers;
-        stringCostumers = string.split(SPLIT_CHAR);
+        stringCostumers = stringOfFile.split(SPLIT_CHAR_LINE);
 
         for(final String str: stringCostumers)
         {
@@ -85,16 +88,25 @@ public class CustomerReader
 
             customerDetailsArray = str.split(SPLIT_CHAR_CUSTOMER_DETAILS);
 
+            if(customerDetailsArray.length != Customer.ATTRIBUTE_COUNT)
+            {
+                final String errorMsg;
+                errorMsg = String.format("Invalid number of attributes, expected %d but got %d",
+                                         Customer.ATTRIBUTE_COUNT,
+                                         stringCostumers.length);
+                LOG.error(errorMsg);
+                throw new ApplicationException(errorMsg);
+            }
 
-            id          = customerDetailsArray[CustomerDetails.ID.getValue()];
-            phoneNumber = customerDetailsArray[CustomerDetails.PHONE_NUMBER.getValue()];
-            firstName   = customerDetailsArray[CustomerDetails.FIRST_NAME.getValue()];
-            lastName    = customerDetailsArray[CustomerDetails.LAST_NAME.getValue()];
-            streetName  = customerDetailsArray[CustomerDetails.STREET_NAME.getValue()];
-            city        = customerDetailsArray[CustomerDetails.CITY.getValue()];
-            postalCode  = customerDetailsArray[CustomerDetails.POSTAL_CODE.getValue()];
-            email       = customerDetailsArray[CustomerDetails.EMAIL.getValue()];
-            joinDate    = LocalDate.parse(customerDetailsArray[CustomerDetails.JOIN_DATE.getValue()], formatter);
+            id          = customerDetailsArray[CustomerDetails.CUSTOMER_ID.getIndex()];
+            phoneNumber = customerDetailsArray[CustomerDetails.PHONE_NUMBER.getIndex()];
+            firstName   = customerDetailsArray[CustomerDetails.FIRST_NAME.getIndex()];
+            lastName    = customerDetailsArray[CustomerDetails.LAST_NAME.getIndex()];
+            streetName  = customerDetailsArray[CustomerDetails.STREET.getIndex()];
+            city        = customerDetailsArray[CustomerDetails.CITY.getIndex()];
+            postalCode  = customerDetailsArray[CustomerDetails.POSTAL_CODE.getIndex()];
+            email       = customerDetailsArray[CustomerDetails.EMAIL.getIndex()];
+            joinDate    = LocalDate.parse(customerDetailsArray[CustomerDetails.JOIN_DATE.getIndex()], formatter);
 
             if(!Validator.validEmail(email))
             {
