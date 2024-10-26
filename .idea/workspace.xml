@@ -9,7 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c717396-a058-410f-9fe4-804c318b730a" name="Changes" comment="lab03 3601. done!">
+    <list default="true" id="2c717396-a058-410f-9fe4-804c318b730a" name="Changes" comment="lab04 3601. changed log file name and putted in debug mode">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -154,6 +154,9 @@
       <workItem from="1729283914359" duration="20398000" />
       <workItem from="1729628113246" duration="482000" />
       <workItem from="1729628625082" duration="41000" />
+      <workItem from="1729628686595" duration="779000" />
+      <workItem from="1729631479976" duration="337000" />
+      <workItem from="1729835459676" duration="44000" />
     </task>
     <task id="LOCAL-00001" summary="lab02 3601. Adding logging using Log4j">
       <option name="closed" value="true" />
@@ -195,7 +198,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729628192259</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="lab04 3601. changed log file name and putted in debug mode">
+      <option name="closed" value="true" />
+      <created>1729628823518</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1729628823518</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -230,6 +241,7 @@
     <MESSAGE value="lab02 3601. Removed info &amp; debug logs" />
     <MESSAGE value="lab03 3601" />
     <MESSAGE value="lab03 3601. done!" />
-    <option name="LAST_COMMIT_MESSAGE" value="lab03 3601. done!" />
+    <MESSAGE value="lab04 3601. changed log file name and putted in debug mode" />
+    <option name="LAST_COMMIT_MESSAGE" value="lab04 3601. changed log file name and putted in debug mode" />
   </component>
 </project>
