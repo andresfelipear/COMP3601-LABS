@@ -5,6 +5,8 @@ import ca.bcit.comp3601.A01394332.lab03.io.CustomerReader;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Common
@@ -64,5 +66,28 @@ public class Common
             }
         }
         return false;
+    }
+
+    /**
+     * Formats the given LocalDate into a string based on the provided format pattern.
+     *
+     * @param date The LocalDate to be formatted.
+     * @param format The format pattern to be applied.
+     * @return A string representation of the date in the specified format.
+     */
+    public static String getDateFormatted(final LocalDate date, final String format)
+    {
+        final DateTimeFormatter formatter;
+        formatter = DateTimeFormatter.ofPattern(format);
+
+        return date.format(formatter);
+    }
+
+    public static LocalDate getLocalDateFromString(final String date, final String format)
+    {
+        final DateTimeFormatter formatter;
+        formatter = DateTimeFormatter.ofPattern(format);
+
+        return LocalDate.parse(date, formatter);
     }
 }

@@ -1,8 +1,18 @@
 package ca.bcit.comp3601.A01394332.lab03.io;
 
+import ca.bcit.comp3601.A01394332.lab03.data.Customer;
+import ca.bcit.comp3601.A01394332.lab03.data.CustomerDetails;
+import ca.bcit.comp3601.A01394332.lab03.data.util.Common;
+import ca.bcit.comp3601.A01394332.lab03.database.CustomerDaoTester;
+
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * CustomerGUI
@@ -24,12 +34,18 @@ public class CustomerGUI
     private static final String APP_NAME;
     private static final int    WIDTH;
     private static final int    HEIGHT;
+    private static final int    WIDTH_CUSTOMER_DETAILS_FRAME;
+    private static final int    HEIGHT_CUSTOMER_DETAILS_FRAME;
 
+    ArrayList<Customer> customers;
+
+    private final CustomerDaoTester daoTester;
 
     final JFrame       frame;
     final JMenuBar     menuBar;
-    final JPanel       panel;
-    final JPanel       userPanel;
+
+    JFrame   customersFrame;
+    JFrame   customerDetailsFrame;
 
     final JMenu fileMenu;
     final JMenu customersMenu;
@@ -44,6 +60,8 @@ public class CustomerGUI
     final JCheckBoxMenuItem byJoinDateCheckBoxMenuItem;
 
     final JMenuItem aboutMenuItem;
+
+    boolean sortByJoinDate;
 
     static
     {
@@ -60,19 +78,17 @@ public class CustomerGUI
 
         WIDTH            = 800;
         HEIGHT           = 600;
+
+        WIDTH_CUSTOMER_DETAILS_FRAME = 600;
+        HEIGHT_CUSTOMER_DETAILS_FRAME = 400;
     }
 
-    public static void main(String[] args)
+    public CustomerGUI(final CustomerDaoTester daoTester) throws Exception
     {
-        new CustomerGUI();
-    }
+        this.daoTester = daoTester;
 
-    public CustomerGUI()
-    {
-        frame     = new JFrame(APP_NAME);
-        menuBar   = new JMenuBar();
-        panel     = new JPanel();
-        userPanel = new JPanel();
+        frame                = new JFrame(APP_NAME);
+        menuBar              = new JMenuBar();
 
         fileMenu      = new JMenu(TITLE_FILE_MENU);
         customersMenu = new JMenu(TITLE_CUSTOMERS_MENU);
@@ -86,6 +102,10 @@ public class CustomerGUI
         listMenuItem               = new JMenuItem(CUSTOMERS_MENU_OPTION2);
 
         aboutMenuItem  = new JMenuItem(HELP_MENU_OPTION1);
+
+        sortByJoinDate = false;
+
+        customers = daoTester.getCustomers();
 
         createAndShowGUI();
     }
@@ -108,8 +128,11 @@ public class CustomerGUI
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(WIDTH, HEIGHT);
         frame.setJMenuBar(menuBar);
-        frame.add(panel);
         frame.setVisible(true);
+
+        customerDetailsFrame = new JFrame("Customer Details");
+        customerDetailsFrame.setSize(WIDTH_CUSTOMER_DETAILS_FRAME, HEIGHT_CUSTOMER_DETAILS_FRAME);
+        customerDetailsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         dropMenuItem.addActionListener(new ActionListener()
         {
@@ -118,18 +141,314 @@ public class CustomerGUI
             {
                 int response = JOptionPane.
                         showConfirmDialog(frame,
-                                          "Are you sure you want to delete this customer?",
+                                          "Are you sure you want to delete all the customers?",
                                           "Confirm Deletion",
                                           JOptionPane.YES_NO_OPTION,
                                           JOptionPane.WARNING_MESSAGE);
 
                 if (response == JOptionPane.YES_OPTION) {
-                    // Code to delete the customer
-                    System.out.println("Customer deleted.");
+                    try
+                    {
+                        daoTester.dropTables();
+                        System.out.println("The customers were deleted correctly.");
+                        System.out.println("Exiting the program!!");
+                        exitProgram();
+                    }
+                    catch(SQLException ex)
+                    {
+                        throw new RuntimeException(ex);
+                    }
                 } else {
                     System.out.println("Deletion canceled.");
                 }
             }
         });
+
+        quitMenuItem.addActionListener( e-> exitProgram());
+
+        countMenuItem.addActionListener( e ->
+                                         {
+                                             try
+                                             {
+                                                 JOptionPane.
+                                                         showMessageDialog(frame,
+                                                                           String.format("There are %d costumers.", daoTester.getIds().size()));
+                                             }
+                                             catch(SQLException ex)
+                                             {
+                                                 System.out.println(ex.getMessage());
+                                             }
+                                         });
+
+        byJoinDateCheckBoxMenuItem.addActionListener( e-> {
+            sortByJoinDate = !sortByJoinDate;
+        });
+
+        listMenuItem.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(final ActionEvent e)
+            {
+                displayCustomersList();
+            }
+        });
+    }
+
+    private void displayCustomersList()
+    {
+        final JLabel    header;
+        final JPanel    buttonPanel;
+        final JButton             okButton;
+        final ArrayList<Customer> customersCopy;
+
+        DefaultListModel<String> model = new DefaultListModel<>();
+        JList<String> customerList = new JList<>(model);
+        customersCopy = new ArrayList<>();
+
+        for(Customer customer : customers)
+        {
+            customersCopy.add(new Customer.Builder(customer.getId(), customer.getPhoneNumber())
+                                      .firstName(customer.getFirstName())
+                                      .lastName(customer.getLastName())
+                                      .streetName(customer.getStreetName())
+                                      .city(customer.getCity())
+                                      .postalCode(customer.getPostalCode())
+                                      .email(customer.getEmail())
+                                      .joinDate(customer.getJoinDate())
+                                      .build());
+        }
+        model.addElement(CustomerReport.getCustomerHeader());
+
+        if(sortByJoinDate)
+        {
+            customersCopy.sort(new CompareByJoinedDate());
+        }
+
+        for(Customer customer : customersCopy)
+        {
+            model.addElement(customer.toString());
+        }
+
+        customerList.addListSelectionListener(event -> {
+            if (!event.getValueIsAdjusting()) {
+                String selectedCustomer = customerList.getSelectedValue();
+                System.out.println(selectedCustomer);
+                displayCustomerDetails(selectedCustomer);
+            }
+        });
+
+        customersFrame  = new JFrame("Customers List");
+        customersFrame.setSize(WIDTH/2, HEIGHT/2);
+        customersFrame.setLayout(new BorderLayout());
+
+        header = new JLabel("Customers", JLabel.CENTER);
+        header.setFont(new Font("Arial", Font.BOLD, 12));
+
+        buttonPanel   = new JPanel();
+        okButton      = new JButton("OK");
+
+        buttonPanel.add(okButton);
+
+        customersFrame.add(header, BorderLayout.NORTH);
+        customersFrame.add(new JScrollPane(customerList));
+        customersFrame.add(buttonPanel, BorderLayout.SOUTH);
+
+        customersFrame.setVisible(true);
+
+        okButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(final ActionEvent e)
+            {
+                customersFrame.dispose();
+            }
+        });
+    }
+
+    private void displayCustomerDetails(final String selectedCustomer)
+    {
+        customerDetailsFrame.dispose();
+        customerDetailsFrame = new JFrame("Customer Details");
+        customerDetailsFrame.setSize(WIDTH_CUSTOMER_DETAILS_FRAME, HEIGHT_CUSTOMER_DETAILS_FRAME);
+        customerDetailsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        final JPanel   customerDetailsPanel;
+        final Customer customer;
+        final String   customerId;
+
+        final JButton  saveButton;
+        final JButton  cancelButton;
+
+        final TextField id          = new TextField(20);
+        final TextField firstName   = new TextField(20);
+        final TextField lastName    = new TextField(20);
+        final TextField streetName  = new TextField(20);
+        final TextField city        = new TextField(20);
+        final TextField postalCode  = new TextField(20);
+        final TextField email       = new TextField(20);
+        final TextField joinDate    = new TextField(20);
+        final TextField phoneNumber = new TextField(20);
+
+        customerId = selectedCustomer.substring(0, CustomerDetails.CUSTOMER_ID.getLength());
+        customer   = getCustomerFromId(customerId.trim());
+
+        // Setting values to the text fields
+        if(customer != null)
+        {
+            id.setText(customer.getId());
+            firstName.setText(customer.getFirstName());
+            lastName.setText(customer.getLastName());
+            streetName.setText(customer.getStreetName());
+            city.setText(customer.getCity());
+            postalCode.setText(customer.getPostalCode());
+            email.setText(customer.getEmail());
+            phoneNumber.setText(customer.getPhoneNumber());
+            joinDate.setText(customer.getJoinDate().toString());
+        }
+
+        id.setEditable(false);
+
+        customerDetailsPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(5, 5, 5, 5);
+        c.fill   = GridBagConstraints.HORIZONTAL;
+
+        c.gridx = 0;
+        c.gridy = 0;
+        customerDetailsPanel.add(new JLabel("ID"), c);
+
+        c.gridx = 1;
+        customerDetailsPanel.add(id, c);
+
+        c.gridx = 0;
+        c.gridy = 1;
+        customerDetailsPanel.add(new JLabel("First Name"), c);
+
+        c.gridx = 1;
+        customerDetailsPanel.add(firstName, c);
+
+        c.gridx = 0;
+        c.gridy = 2;
+        customerDetailsPanel.add(new JLabel("Last Name"), c);
+
+        c.gridx = 1;
+        customerDetailsPanel.add(lastName, c);
+
+        c.gridx = 0;
+        c.gridy = 3;
+        customerDetailsPanel.add(new JLabel("Street"), c);
+
+        c.gridx = 1;
+        customerDetailsPanel.add(streetName, c);
+
+        c.gridx = 0;
+        c.gridy = 4;
+        customerDetailsPanel.add(new JLabel("City"), c);
+
+        c.gridx = 1;
+        customerDetailsPanel.add(city, c);
+
+        c.gridx = 0;
+        c.gridy = 5;
+        customerDetailsPanel.add(new JLabel("Postal Code"), c);
+
+        c.gridx = 1;
+        customerDetailsPanel.add(postalCode, c);
+
+        c.gridx = 0;
+        c.gridy = 6;
+        customerDetailsPanel.add(new JLabel("Phone"), c);
+
+        c.gridx = 1;
+        customerDetailsPanel.add(phoneNumber, c);
+
+        c.gridx = 0;
+        c.gridy = 7;
+        customerDetailsPanel.add(new JLabel("Email"), c);
+
+        c.gridx = 1;
+        customerDetailsPanel.add(email, c);
+
+        c.gridx = 0;
+        c.gridy = 8;
+        customerDetailsPanel.add(new JLabel("Joined Date"), c);
+
+        c.gridx = 1;
+        customerDetailsPanel.add(joinDate, c);
+
+        saveButton = new JButton("Save");
+        cancelButton = new JButton("Cancel");
+
+        c.gridx = 0;
+        c.gridy = 9;
+        c.weightx = 1;
+        customerDetailsPanel.add(saveButton, c);
+
+        c.gridx = 1;
+        customerDetailsPanel.add(cancelButton, c);
+
+        customerDetailsFrame.add(customerDetailsPanel, BorderLayout.CENTER);
+        customerDetailsFrame.setVisible(true);
+
+        saveButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(final ActionEvent e)
+            {
+                final Customer customerUpdated;
+                customerUpdated = new Customer.Builder(customerId, phoneNumber.getText())
+                        .firstName(firstName.getText())
+                        .lastName(lastName.getText())
+                        .streetName(streetName.getText())
+                        .city(city.getText())
+                        .postalCode(postalCode.getText())
+                        .email(email.getText())
+                        .joinDate(LocalDate.parse(joinDate.getText()))
+                        .build();
+
+                try
+                {
+                    daoTester.update(customerUpdated);
+                    customers = daoTester.getCustomers();
+                    customerDetailsFrame.dispose();
+                    refreshCustomersFrame();
+                }
+                catch(Exception ex)
+                {
+                    System.out.println(ex.getMessage());
+                }
+            }
+        });
+
+        cancelButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(final ActionEvent e)
+            {
+                customerDetailsFrame.dispose();
+            }
+        });
+    }
+
+    private void refreshCustomersFrame()
+    {
+
+    }
+
+    private Customer getCustomerFromId(final String customerId)
+    {
+        for(final Customer customer : customers)
+        {
+            if(customer.getId().equals(customerId))
+            {
+                return customer;
+            }
+        }
+        return null;
+    }
+
+    private void exitProgram()
+    {
+        frame.dispose();
     }
 }

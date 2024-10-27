@@ -1,6 +1,8 @@
 package ca.bcit.comp3601.A01394332.lab03.data;
 
+import ca.bcit.comp3601.A01394332.lab03.data.util.Common;
 import ca.bcit.comp3601.A01394332.lab03.data.util.Validator;
+import ca.bcit.comp3601.A01394332.lab03.io.CustomerReader;
 
 import java.time.LocalDate;
 
@@ -13,6 +15,7 @@ import java.time.LocalDate;
 public class Customer
 {
     private static final String DATE_FORMAT;
+    public static final  String CUSTOMER_FORMAT;
     public static final int     ATTRIBUTE_COUNT;
 
     private final String id;
@@ -28,6 +31,15 @@ public class Customer
 
     static
     {
+        CUSTOMER_FORMAT = "%-" + CustomerDetails.CUSTOMER_ID.getLength() +
+                "s %-" + CustomerDetails.FIRST_NAME.getLength()+
+                "s %-" + CustomerDetails.LAST_NAME.getLength() +
+                "s %-" + CustomerDetails.STREET.getLength() +
+                "s %-" + CustomerDetails.CITY.getLength() +
+                "s %-" + CustomerDetails.POSTAL_CODE.getLength() +
+                "s %-" + CustomerDetails.PHONE_NUMBER.getLength() +
+                "s %-" + CustomerDetails.EMAIL.getLength() +
+                "s %-12s";
         DATE_FORMAT     = "MMM dd yyyy";
         ATTRIBUTE_COUNT = 9;
     }
@@ -328,16 +340,16 @@ public class Customer
     @Override
     public String toString()
     {
-        return id + ". " + String.format("%4s", id).replace(' ', '0') +
-                String.format("  %-10s %-13s %-25s %-13s %-12s %-15s %-25s %-12s" ,
-                              firstName,
-                              lastName,
-                              streetName,
-                              city,
-                              postalCode,
-                              phoneNumber,
-                              email,
-                              Validator.getDateFormatted(joinDate, DATE_FORMAT));
+        return String.format(CUSTOMER_FORMAT,
+                             id,
+                             firstName,
+                             lastName,
+                             streetName,
+                             city,
+                             postalCode,
+                             phoneNumber,
+                             email,
+                             Common.getDateFormatted(joinDate, DATE_FORMAT));
     }
 
     /**

@@ -69,10 +69,10 @@ public class CustomerDao extends Dao
                         + "%s VARCHAR(20), " // 3
                         + "%s VARCHAR(20), " // 4
                         + "%s VARCHAR(40), " // 5
-                        + "%s VARCHAR(15), " // 6
+                        + "%s VARCHAR(25), " // 6
                         + "%s VARCHAR(10), " // 7
-                        + "%s VARCHAR(10), " // 8
-                        + "%s VARCHAR(30), " // 9
+                        + "%s VARCHAR(15), " // 8
+                        + "%s VARCHAR(50), " // 9
                         + "%s DATE, " // 10
                         + "primary key (%s) )",// 11
                 tableName,// 1
@@ -289,50 +289,84 @@ public class CustomerDao extends Dao
                                        id);
             resultSet = statement.executeQuery(sql);
 
-            int count = 0;
-            while(resultSet.next())
-            {
-                count++;
-                if(count > 1)
-                {
-                    throw new Exception(String.format("Expected one result, got %d", count));
-                }
-
-                final String    customerId;
-                final String    firstName;
-                final String    lastName;
-                final String    streetName;
-                final String    city;
-                final String    postalCode;
-                final String    email;
-                final String    phoneNumber;
-                final LocalDate         joinDate;
-
-                customerId  = resultSet.getString(CustomerDetails.CUSTOMER_ID.getName());
-                phoneNumber = resultSet.getString(CustomerDetails.PHONE_NUMBER.getName());
-                firstName   = resultSet.getString(CustomerDetails.FIRST_NAME.getName());
-                lastName    = resultSet.getString(CustomerDetails.LAST_NAME.getName());
-                streetName  = resultSet.getString(CustomerDetails.STREET.getName());
-                city        = resultSet.getString(CustomerDetails.CITY.getName());
-                postalCode  = resultSet.getString(CustomerDetails.POSTAL_CODE.getName());
-                email       = resultSet.getString(CustomerDetails.EMAIL.getName());
-                joinDate    = LocalDate.parse(resultSet.getString(CustomerDetails.JOIN_DATE.getName()));
-
-                customer = new Customer.Builder(customerId, phoneNumber)
-                        .firstName(firstName)
-                        .lastName(lastName)
-                        .streetName(streetName)
-                        .city(city)
-                        .postalCode(postalCode)
-                        .email(email)
-                        .joinDate(joinDate)
-                        .build();
-            }
+            customer = getCustomersFromResultSet(resultSet).get(0);
         }
         finally
         {
             close(statement);
         }
         return customer;
+    }
+
+    public ArrayList<Customer> getCustomers() throws SQLException
+    {
+        ArrayList<Customer> customers;
+        Connection connection;
+        Statement  statement = null;
+        ResultSet resultSet = null;
+
+        customers = new ArrayList<>();
+
+        try
+        {
+            connection = database.getConnection();
+            statement = connection.createStatement();
+            String sql = String.format("SELECT * from %s",
+                                       tableName,
+                                       CustomerDetails.CUSTOMER_ID.getName());
+            resultSet = statement.executeQuery(sql);
+            customers = getCustomersFromResultSet(resultSet);
+        }
+        finally
+        {
+            close(statement);
+        }
+
+        return customers;
+    }
+
+    public ArrayList<Customer> getCustomersFromResultSet(final ResultSet rs) throws SQLException
+    {
+        final ArrayList<Customer> customers;
+
+        customers = new ArrayList<>();
+
+        while(rs.next())
+        {
+            final Customer  customer;
+            final String    customerId;
+            final String    firstName;
+            final String    lastName;
+            final String    streetName;
+            final String    city;
+            final String    postalCode;
+            final String    email;
+            final String    phoneNumber;
+            final LocalDate         joinDate;
+
+            customerId  = rs.getString(CustomerDetails.CUSTOMER_ID.getName());
+            phoneNumber = rs.getString(CustomerDetails.PHONE_NUMBER.getName());
+            firstName   = rs.getString(CustomerDetails.FIRST_NAME.getName());
+            lastName    = rs.getString(CustomerDetails.LAST_NAME.getName());
+            streetName  = rs.getString(CustomerDetails.STREET.getName());
+            city        = rs.getString(CustomerDetails.CITY.getName());
+            postalCode  = rs.getString(CustomerDetails.POSTAL_CODE.getName());
+            email       = rs.getString(CustomerDetails.EMAIL.getName());
+            joinDate    = LocalDate.parse(rs.getString(CustomerDetails.JOIN_DATE.getName()));
+
+            customer = new Customer.Builder(customerId, phoneNumber)
+                    .firstName(firstName)
+                    .lastName(lastName)
+                    .streetName(streetName)
+                    .city(city)
+                    .postalCode(postalCode)
+                    .email(email)
+                    .joinDate(joinDate)
+                    .build();
+
+            customers.add(customer);
+        }
+
+        return customers;
     }
 }

@@ -5,6 +5,7 @@ import ca.bcit.comp3601.A01394332.lab03.data.Customer;
 import ca.bcit.comp3601.A01394332.lab03.data.util.Common;
 import ca.bcit.comp3601.A01394332.lab03.database.CustomerDaoTester;
 import ca.bcit.comp3601.A01394332.lab03.database.DbConstants;
+import ca.bcit.comp3601.A01394332.lab03.io.CustomerGUI;
 import ca.bcit.comp3601.A01394332.lab03.io.CustomerReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,7 +37,7 @@ public class Lab4
         LOG4J_CONFIG_FILENAME = "log4j2.xml";
         configureLogging();
         LOG                   = LogManager.getLogger(Lab4.class);
-        CUSTOMER_FILE_NAME    = "customers.txt";
+        CUSTOMER_FILE_NAME    = "customers.dat";
     }
 
     public static void main(String[] args)
@@ -45,6 +46,7 @@ public class Lab4
         final LocalDateTime  timestampEnd;
         final Duration       duration;
 
+        final CustomerDaoTester   customerDaoTester;
         final CustomerReader      reader;
 
         ArrayList<Customer> customers;
@@ -58,13 +60,13 @@ public class Lab4
         try
         {
             reader.readCustomers();
-            customers = reader.getCustomers();
-            //CustomerReport.printCustomerReport(customers);
         }
-        catch(ApplicationException e)
+        catch(Exception e)
         {
-            LOG.error(e.getMessage());
+            System.out.println(e.getMessage());
         }
+
+        customers = reader.getCustomers();
 
         File dbPropertiesFile = new File(DbConstants.DB_PROPERTIES_FILENAME);
         if (!dbPropertiesFile.exists()) {
@@ -74,13 +76,17 @@ public class Lab4
 
         try
         {
-            new CustomerDaoTester(dbPropertiesFile, customers).run();
+            customerDaoTester =  new CustomerDaoTester(dbPropertiesFile, customers);
+            customerDaoTester.run();
+
+            new CustomerGUI(customerDaoTester);
         }
         catch(Exception e)
         {
             LOG.error(e.getMessage());
             e.printStackTrace();
         }
+
 
         timestampEnd = LocalDateTime.now();
         System.out.println(timestampEnd);

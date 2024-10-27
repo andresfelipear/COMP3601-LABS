@@ -3,6 +3,7 @@ package ca.bcit.comp3601.A01394332.lab03.io;
 import ca.bcit.comp3601.A01394332.lab03.data.ApplicationException;
 import ca.bcit.comp3601.A01394332.lab03.data.Customer;
 import ca.bcit.comp3601.A01394332.lab03.data.CustomerDetails;
+import ca.bcit.comp3601.A01394332.lab03.data.util.Common;
 import ca.bcit.comp3601.A01394332.lab03.data.util.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -62,7 +63,6 @@ public class CustomerReader
      * and those details are used to build and store Customer objects in the customers list.
      */
     public void readCustomers() throws ApplicationException
-
     {
         final String[] stringCostumers;
         stringCostumers = stringOfFile.split(SPLIT_CHAR_LINE);
@@ -82,9 +82,6 @@ public class CustomerReader
             final String    phoneNumber;
 
             final LocalDate         joinDate;
-            final DateTimeFormatter formatter;
-
-            formatter = DateTimeFormatter.ofPattern(FORMATTER_DATE);
 
             customerDetailsArray = str.split(SPLIT_CHAR_CUSTOMER_DETAILS);
 
@@ -99,14 +96,14 @@ public class CustomerReader
             }
 
             id          = customerDetailsArray[CustomerDetails.CUSTOMER_ID.getIndex()];
-            phoneNumber = customerDetailsArray[CustomerDetails.PHONE_NUMBER.getIndex()];
-            firstName   = customerDetailsArray[CustomerDetails.FIRST_NAME.getIndex()];
-            lastName    = customerDetailsArray[CustomerDetails.LAST_NAME.getIndex()];
-            streetName  = customerDetailsArray[CustomerDetails.STREET.getIndex()];
-            city        = customerDetailsArray[CustomerDetails.CITY.getIndex()];
-            postalCode  = customerDetailsArray[CustomerDetails.POSTAL_CODE.getIndex()];
-            email       = customerDetailsArray[CustomerDetails.EMAIL.getIndex()];
-            joinDate    = LocalDate.parse(customerDetailsArray[CustomerDetails.JOIN_DATE.getIndex()], formatter);
+            phoneNumber = customerDetailsArray[CustomerDetails.PHONE_NUMBER.getIndex()].replace("'","''");
+            firstName   = customerDetailsArray[CustomerDetails.FIRST_NAME.getIndex()].replace("'","''");
+            lastName    = customerDetailsArray[CustomerDetails.LAST_NAME.getIndex()].replace("'","''");
+            streetName  = customerDetailsArray[CustomerDetails.STREET.getIndex()].replace("'","''");
+            city        = customerDetailsArray[CustomerDetails.CITY.getIndex()].replace("'","''");
+            postalCode  = customerDetailsArray[CustomerDetails.POSTAL_CODE.getIndex()].replace("'","''");
+            email       = customerDetailsArray[CustomerDetails.EMAIL.getIndex()].replace("'","''");
+            joinDate    = Common.getLocalDateFromString(customerDetailsArray[CustomerDetails.JOIN_DATE.getIndex()], FORMATTER_DATE);
 
             if(!Validator.validEmail(email))
             {

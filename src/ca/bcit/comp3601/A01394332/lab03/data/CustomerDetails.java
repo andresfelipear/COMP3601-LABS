@@ -15,10 +15,10 @@ public enum CustomerDetails
     FIRST_NAME(1, "firstName", "VARCHAR", 20 ),
     LAST_NAME(2, "lastName", "VARCHAR", 20 ),
     STREET(3, "street", "VARCHAR", 40 ),
-    CITY(4, "city", "VARCHAR", 15 ),
+    CITY(4, "city", "VARCHAR", 25 ),
     POSTAL_CODE(5, "postalCode", "VARCHAR", 10 ),
-    PHONE_NUMBER(6, "phoneNumber", "VARCHAR", 10 ),
-    EMAIL(7, "email", "VARCHAR", 30 ),
+    PHONE_NUMBER(6, "phoneNumber", "VARCHAR", 15 ),
+    EMAIL(7, "email", "VARCHAR", 50 ),
     JOIN_DATE(8, "dateJoined", "DATE", -1);
 
     private final String name;
@@ -45,6 +45,11 @@ public enum CustomerDetails
     public String getName()
     {
         return name;
+    }
+
+    public int getLength()
+    {
+        return length;
     }
 
     /**

@@ -49,13 +49,10 @@ public class CustomerDaoTester
             }
             createTables();
             insertCustomers();
+            customerDao.getCustomers();
 
             // get ids and print information
-            ids = customerDao.getIds();
-            CustomerReport.printIds(ids);
-
-            // print information of each customer
-            printCustomerDetails();
+            getAndPrintCustomersIds();
         }
         catch (SQLException e)
         {
@@ -66,6 +63,28 @@ public class CustomerDaoTester
         {
             database.shutdown();
         }
+    }
+
+    public void getAndPrintCustomersIds() throws SQLException
+    {
+        if(database.tableExists(CustomerDao.TABLE_NAME))
+        {
+            ids = customerDao.getIds();
+            CustomerReport.printIds(ids);
+        }
+        else
+        {
+            System.out.printf("The given table %s does not exist.\n", CustomerDao.TABLE_NAME);
+        }
+    }
+
+    public List<String> getIds() throws SQLException
+    {
+        if(ids == null)
+        {
+            ids = customerDao.getIds();
+        }
+        return ids;
     }
 
     private void printCustomerDetails()
@@ -89,13 +108,18 @@ public class CustomerDaoTester
         }
     }
 
+    public ArrayList<Customer> getCustomers() throws Exception
+    {
+        return customerDao.getCustomers();
+    }
+
     private void connect() throws SQLException
     {
         connection = database.getConnection();
         customerDao = new CustomerDao(database);
     }
 
-    private void dropTables() throws SQLException
+    public void dropTables() throws SQLException
     {
         customerDao.drop();
     }
@@ -105,7 +129,7 @@ public class CustomerDaoTester
         customerDao.create();
     }
 
-    private void update(final Customer customer) throws SQLException
+    public void update(final Customer customer) throws SQLException
     {
         try
         {
@@ -118,7 +142,7 @@ public class CustomerDaoTester
         }
     }
 
-    private void delete(final Customer customer)
+    public void delete(final Customer customer)
     {
         try
         {
@@ -131,7 +155,7 @@ public class CustomerDaoTester
         }
     }
 
-    private void insertCustomers() throws SQLException
+    public void insertCustomers() throws SQLException
     {
         for(final Customer customer : customers)
         {

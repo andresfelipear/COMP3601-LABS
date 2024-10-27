@@ -14,6 +14,15 @@ import java.util.List;
  */
 public class CustomerReport
 {
+    private static final String HEADER_SEPARATOR;
+    private static final String LINE_SEPARATOR;
+
+    static
+    {
+        HEADER_SEPARATOR = "--------------------------------------------------------------------------------------------------------------------------------------------------";
+        LINE_SEPARATOR   = "\n";
+    }
+
     /**
      * Prints a formatted customer report to the console, including the duration of the report generation.
      *
@@ -24,8 +33,8 @@ public class CustomerReport
 
 
         System.out.println("Customer Report");
-        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------");
-        System.out.printf("#. %-4s  %-10s %-13s %-25s %-13s %-12s %-15s %-25s %-12s",
+        System.out.println(HEADER_SEPARATOR);
+        System.out.printf(Customer.CUSTOMER_FORMAT,
                           "ID",
                           CustomerDetails.FIRST_NAME,
                           CustomerDetails.LAST_NAME,
@@ -35,10 +44,38 @@ public class CustomerReport
                           CustomerDetails.PHONE_NUMBER,
                           CustomerDetails.EMAIL,
                           CustomerDetails.JOIN_DATE);
-        System.out.println("\n--------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println(HEADER_SEPARATOR);
 
         customers.sort(new CompareByJoinedDate());
         customers.forEach(System.out::println);
+    }
+
+    public static String getCustomerReportSorted(final ArrayList<Customer> customers, final boolean sortByJoinedDate)
+    {
+        final StringBuilder customerReport = new StringBuilder();
+        customerReport.append(String.format(Customer.CUSTOMER_FORMAT,
+                                            "ID",
+                                            CustomerDetails.FIRST_NAME,
+                                            CustomerDetails.LAST_NAME,
+                                            CustomerDetails.STREET,
+                                            CustomerDetails.CITY,
+                                            CustomerDetails.POSTAL_CODE,
+                                            CustomerDetails.PHONE_NUMBER,
+                                            CustomerDetails.EMAIL,
+                                            CustomerDetails.JOIN_DATE));
+        customerReport.append(LINE_SEPARATOR);
+        customerReport.append(HEADER_SEPARATOR);
+        customerReport.append(LINE_SEPARATOR);
+
+        if(sortByJoinedDate)
+        {
+            customers.sort(new CompareByJoinedDate());
+        }
+
+        customers.forEach( customer -> customerReport.append(customer.toString()).append(LINE_SEPARATOR));
+
+        System.out.println(customerReport);
+        return customerReport.toString();
     }
 
     /**
@@ -53,5 +90,19 @@ public class CustomerReport
     {
         System.out.printf("Loaded %d customer IDs from the database\n", ids.size());
         System.out.println("Customer IDs:" + ids.toString());
+    }
+
+    public static String getCustomerHeader()
+    {
+        return String.format(Customer.CUSTOMER_FORMAT,
+                             "ID",
+                             CustomerDetails.FIRST_NAME,
+                             CustomerDetails.LAST_NAME,
+                             CustomerDetails.STREET,
+                             CustomerDetails.CITY,
+                             CustomerDetails.POSTAL_CODE,
+                             CustomerDetails.PHONE_NUMBER,
+                             CustomerDetails.EMAIL,
+                             CustomerDetails.JOIN_DATE);
     }
 }
