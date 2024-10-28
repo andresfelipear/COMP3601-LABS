@@ -13,11 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import static ca.bcit.comp3601.A01394332.lab03.io.CustomerReader.FORMATTER_DATE;
 
 /**
  * CustomerDao
@@ -289,7 +286,16 @@ public class CustomerDao extends Dao
                                        id);
             resultSet = statement.executeQuery(sql);
 
-            customer = getCustomersFromResultSet(resultSet).get(0);
+            ArrayList<Customer> customers = getCustomersFromResultSet(resultSet);
+            if(customers.isEmpty())
+            {
+                return null;
+            }
+            customer = customers.get(0);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
         }
         finally
         {
@@ -298,6 +304,12 @@ public class CustomerDao extends Dao
         return customer;
     }
 
+    /**
+     * Retrieves all customers from the database.
+     *
+     * @return a list of all Customer objects from the database
+     * @throws SQLException if a database access error occurs
+     */
     public ArrayList<Customer> getCustomers() throws SQLException
     {
         ArrayList<Customer> customers;
@@ -325,6 +337,13 @@ public class CustomerDao extends Dao
         return customers;
     }
 
+    /**
+     * Converts a ResultSet into a list of Customer objects.
+     *
+     * @param rs the ResultSet containing customer data
+     * @return a list of Customer objects
+     * @throws SQLException if a database access error occurs
+     */
     public ArrayList<Customer> getCustomersFromResultSet(final ResultSet rs) throws SQLException
     {
         final ArrayList<Customer> customers;

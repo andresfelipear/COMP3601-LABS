@@ -187,6 +187,11 @@ public class Customer
 
     }
 
+    /**
+     * Gets the Customer's id.
+     *
+     * @return The Customer's id.
+     */
     public String getId()
     {
         return id;

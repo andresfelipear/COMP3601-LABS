@@ -30,6 +30,14 @@ public class CustomerDaoTester
 
     private static final Logger LOG = LogManager.getLogger(CustomerDaoTester.class);
 
+    /**
+     * Initializes the CustomerDaoTester with a properties file for database
+     * configuration and a list of customers to be tested.
+     *
+     * @param dbPropertiesFile the database configuration file
+     * @param customers a list of Customer objects to be inserted into the database
+     * @throws IOException if an error occurs during file reading
+     */
     public CustomerDaoTester(final File dbPropertiesFile, final ArrayList<Customer> customers) throws IOException
     {
         this.customers = customers;
@@ -38,6 +46,13 @@ public class CustomerDaoTester
         database = new Database(dbProperties);
     }
 
+    /**
+     * Runs the testing process, including connecting to the database, creating
+     * tables, inserting customers, and printing customer information.
+     *
+     * @throws ClassNotFoundException if the database driver class is not found
+     * @throws SQLException if a database access error occurs
+     */
     public void run() throws ClassNotFoundException, SQLException
     {
         connect();
@@ -65,6 +80,11 @@ public class CustomerDaoTester
         }
     }
 
+    /**
+     * Retrieves and prints customer IDs from the database if the table exists.
+     *
+     * @throws SQLException if a database access error occurs
+     */
     public void getAndPrintCustomersIds() throws SQLException
     {
         if(database.tableExists(CustomerDao.TABLE_NAME))
@@ -78,6 +98,13 @@ public class CustomerDaoTester
         }
     }
 
+    /**
+     * Retrieves customer IDs from the database. If the IDs have already been retrieved,
+     * it returns the existing list.
+     *
+     * @return a list of customer IDs as strings
+     * @throws SQLException if a database access error occurs
+     */
     public List<String> getIds() throws SQLException
     {
         if(ids == null)
@@ -87,6 +114,10 @@ public class CustomerDaoTester
         return ids;
     }
 
+    /**
+     * Prints detailed information of each customer based on their ID.
+     * If a customer cannot be found, logs an error.
+     */
     private void printCustomerDetails()
     {
         for(final String id : ids)
@@ -108,27 +139,54 @@ public class CustomerDaoTester
         }
     }
 
+    /**
+     * Retrieves all customers from the database.
+     *
+     * @return an ArrayList of all Customer objects in the database
+     * @throws Exception if a database access error occurs
+     */
     public ArrayList<Customer> getCustomers() throws Exception
     {
         return customerDao.getCustomers();
     }
 
+    /**
+     * Establishes a connection to the database and initializes the CustomerDao object.
+     *
+     * @throws SQLException if a database access error occurs
+     */
     private void connect() throws SQLException
     {
         connection = database.getConnection();
         customerDao = new CustomerDao(database);
     }
 
+    /**
+     * Drops the customer table from the database if it exists.
+     *
+     * @throws SQLException if a database access error occurs
+     */
     public void dropTables() throws SQLException
     {
         customerDao.drop();
     }
 
+    /**
+     * Creates the customer table in the database.
+     *
+     * @throws SQLException if a database access error occurs
+     */
     private void createTables() throws SQLException
     {
         customerDao.create();
     }
 
+    /**
+     * Updates an existing customer record in the database.
+     *
+     * @param customer the Customer object containing updated data
+     * @throws SQLException if a database access error occurs
+     */
     public void update(final Customer customer) throws SQLException
     {
         try
@@ -142,6 +200,11 @@ public class CustomerDaoTester
         }
     }
 
+    /**
+     * Deletes a customer record from the database.
+     *
+     * @param customer the Customer object containing data to delete
+     */
     public void delete(final Customer customer)
     {
         try
@@ -155,6 +218,11 @@ public class CustomerDaoTester
         }
     }
 
+    /**
+     * Inserts each customer in the provided list into the database.
+     *
+     * @throws SQLException if a database access error occurs
+     */
     public void insertCustomers() throws SQLException
     {
         for(final Customer customer : customers)

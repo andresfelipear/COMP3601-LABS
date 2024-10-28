@@ -2,8 +2,9 @@ package ca.bcit.comp3601.A01394332.lab03.io;
 
 import ca.bcit.comp3601.A01394332.lab03.data.Customer;
 import ca.bcit.comp3601.A01394332.lab03.data.CustomerDetails;
-import ca.bcit.comp3601.A01394332.lab03.data.util.Common;
 import ca.bcit.comp3601.A01394332.lab03.database.CustomerDaoTester;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,10 +13,10 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 /**
- * CustomerGUI
+ * CustomerGUI Graphical User Interface for managing customers.
+ * Provides functionalities for viewing, editing, and deleting customer records.
  *
  * @author Andres Arevalo
  * @version 1.0
@@ -54,17 +55,17 @@ public class CustomerGUI
 
     final JMenuItem dropMenuItem;
     final JMenuItem quitMenuItem;
-
     final JMenuItem countMenuItem;
     final JMenuItem listMenuItem;
+    final JMenuItem aboutMenuItem;
 
     final JCheckBoxMenuItem byJoinDateCheckBoxMenuItem;
-
-    final JMenuItem aboutMenuItem;
 
     boolean sortByJoinDate;
 
     DefaultListModel<String> model;
+
+    private static final Logger LOG;
 
     static
     {
@@ -84,8 +85,16 @@ public class CustomerGUI
 
         WIDTH_CUSTOMER_DETAILS_FRAME = 600;
         HEIGHT_CUSTOMER_DETAILS_FRAME = 400;
+
+        LOG = LogManager.getLogger(CustomerGUI.class);
     }
 
+    /**
+     * Constructs the CustomerGUI, initializing the database tester and UI components.
+     * @param daoTester the database tester instance.
+     * @param fileName the name of the file containing customer data.
+     * @throws Exception if there is an error initializing data.
+     */
     public CustomerGUI(final CustomerDaoTester daoTester, final String fileName) throws Exception
     {
         this.daoTester = daoTester;
@@ -115,6 +124,9 @@ public class CustomerGUI
         createAndShowGUI();
     }
 
+    /**
+     * Initializes and displays the main GUI components.
+     */
     private void createAndShowGUI()
     {
         fileMenu.add(dropMenuItem);
@@ -135,85 +147,73 @@ public class CustomerGUI
         frame.setJMenuBar(menuBar);
         frame.setVisible(true);
 
-        customerDetailsFrame = new JFrame("Customer Details");
-        customerDetailsFrame.setSize(WIDTH_CUSTOMER_DETAILS_FRAME, HEIGHT_CUSTOMER_DETAILS_FRAME);
-        customerDetailsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        dropMenuItem.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(final ActionEvent e)
-            {
-                int response = JOptionPane.
-                        showConfirmDialog(frame,
-                                          "Are you sure you want to delete all the customers?",
-                                          "Confirm Deletion",
-                                          JOptionPane.YES_NO_OPTION,
-                                          JOptionPane.WARNING_MESSAGE);
-
-                if (response == JOptionPane.YES_OPTION) {
-                    try
-                    {
-                        daoTester.dropTables();
-                        System.out.println("The customers were deleted correctly.");
-                        System.out.println("Exiting the program!!");
-                        exitProgram();
-                    }
-                    catch(SQLException ex)
-                    {
-                        throw new RuntimeException(ex);
-                    }
-                } else {
-                    System.out.println("Deletion canceled.");
-                }
-            }
-        });
-
-        quitMenuItem.addActionListener( e-> exitProgram());
-
-        countMenuItem.addActionListener( e ->
-                                         {
-                                             try
-                                             {
-                                                 JOptionPane.
-                                                         showMessageDialog(frame,
-                                                                           String.format("There are %d costumers.", daoTester.getIds().size()));
-                                             }
-                                             catch(SQLException ex)
-                                             {
-                                                 System.out.println(ex.getMessage());
-                                             }
-                                         });
-
-        byJoinDateCheckBoxMenuItem.addActionListener( e-> {
-            sortByJoinDate = !sortByJoinDate;
-        });
-
-        listMenuItem.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(final ActionEvent e)
-            {
-                displayCustomersList();
-            }
-        });
-
-        aboutMenuItem.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(final ActionEvent e)
-            {
-                JOptionPane.showMessageDialog(frame, getGameInstructions(), "About", JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
+        dropMenuItem.addActionListener(e -> handleDropDatabase());
+        quitMenuItem.addActionListener(e -> exitProgram());
+        countMenuItem.addActionListener(e -> handleCustomerCount());
+        byJoinDateCheckBoxMenuItem.addActionListener(e -> sortByJoinDate = !sortByJoinDate);
+        listMenuItem.addActionListener(e -> displayCustomersList());
+        aboutMenuItem.addActionListener(e -> showAboutDialog());
     }
 
     /**
-     * Returns the game instructions.
-     *
-     * @return A string containing the game instructions.
+     * Handles the database drop action, confirming and executing the deletion if confirmed.
      */
-    private static String getGameInstructions()
+    private void handleDropDatabase()
+    {
+        int response = JOptionPane.showConfirmDialog(frame,
+                                                     "Are you sure you want to delete all the customers?",
+                                                     "Confirm Deletion",
+                                                     JOptionPane.YES_NO_OPTION,
+                                                     JOptionPane.WARNING_MESSAGE);
+
+        if (response == JOptionPane.YES_OPTION)
+        {
+            try
+            {
+                daoTester.dropTables();
+                LOG.info("All customers deleted successfully.");
+                exitProgram();
+            } catch (SQLException ex)
+            {
+                LOG.error("Failed to drop customer tables", ex);
+            }
+        }
+        else
+        {
+            LOG.info("Customer deletion canceled by user.");
+        }
+    }
+
+    /**
+     * Displays the customer count.
+     */
+    private void handleCustomerCount()
+    {
+        try
+        {
+            int customerCount = daoTester.getIds().size();
+            JOptionPane.showMessageDialog(frame, String.format("There are %d customers.", customerCount));
+            LOG.info("Displayed customer count: {}", customerCount);
+        } catch (SQLException ex) {
+            LOG.error("Error fetching customer count", ex);
+        }
+    }
+
+    /**
+     * Displays the "About" dialog with application instructions.
+     */
+    private void showAboutDialog()
+    {
+        JOptionPane.showMessageDialog(frame, getAppInstructions(), "About", JOptionPane.INFORMATION_MESSAGE);
+        LOG.info("Displayed 'About' dialog.");
+    }
+
+    /**
+     * Returns the app instructions.
+     *
+     * @return A string containing the app  instructions.
+     */
+    private static String getAppInstructions()
     {
         return "Customers Management App\n" +
                 "COMP 3601 - Assignment 1\n\n" +
@@ -236,6 +236,9 @@ public class CustomerGUI
                 "   -About (F1): Opens this 'About' dialog to provide details about the application.";
     }
 
+    /**
+     * Displays the list of customers.
+     */
     private void displayCustomersList()
     {
         final JLabel    header;
@@ -295,6 +298,7 @@ public class CustomerGUI
         customersFrame.add(buttonPanel, BorderLayout.SOUTH);
 
         customersFrame.setVisible(true);
+        LOG.info("Customer list displayed.");
 
         okButton.addActionListener(new ActionListener()
         {
@@ -306,8 +310,15 @@ public class CustomerGUI
         });
     }
 
+    /**
+     * Displays the customer details in a new window for editing.
+     * @param selectedCustomer the customer information string to display.
+     */
     private void displayCustomerDetails(final String selectedCustomer)
     {
+        customerDetailsFrame = new JFrame("Customer Details");
+        customerDetailsFrame.setSize(WIDTH_CUSTOMER_DETAILS_FRAME, HEIGHT_CUSTOMER_DETAILS_FRAME);
+        customerDetailsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         customerDetailsFrame.dispose();
         customerDetailsFrame = new JFrame("Customer Details");
         customerDetailsFrame.setSize(WIDTH_CUSTOMER_DETAILS_FRAME, HEIGHT_CUSTOMER_DETAILS_FRAME);
@@ -431,6 +442,8 @@ public class CustomerGUI
         customerDetailsFrame.add(customerDetailsPanel, BorderLayout.CENTER);
         customerDetailsFrame.setVisible(true);
 
+        LOG.info("Customer details displayed for editing: {}", customer.getStringDetails());
+
         saveButton.addActionListener(new ActionListener()
         {
             @Override
@@ -473,6 +486,10 @@ public class CustomerGUI
         });
     }
 
+    /**
+     * Updates the GUI model with the latest customer data.
+     * @param customer the updated customer data to reflect.
+     */
     private void updateCustomersModel(final Customer customer)
     {
         for(int i = 0; i < model.size(); i++)
@@ -481,10 +498,16 @@ public class CustomerGUI
             if(currentCustomer.contains(customer.getId()))
             {
                 model.set(i, customer.toString());
+                LOG.info("Updated customer in model: {}", customer.getId());
             }
         }
     }
 
+    /**
+     * Finds a customer by their ID.
+     * @param customerId the ID of the customer to find.
+     * @return the customer if found; null otherwise.
+     */
     private Customer getCustomerFromId(final String customerId)
     {;
         for(final Customer customer : customers)
@@ -497,6 +520,9 @@ public class CustomerGUI
         return null;
     }
 
+    /**
+     * Exits the program, logging the exit action.
+     */
     private void exitProgram()
     {
         frame.dispose();

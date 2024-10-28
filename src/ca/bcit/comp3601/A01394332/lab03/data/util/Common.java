@@ -84,6 +84,13 @@ public class Common
         return date.format(formatter);
     }
 
+    /**
+     * Parses a date string into a LocalDate based on the given format.
+     *
+     * @param date the date string to parse.
+     * @param format the expected format of the date string.
+     * @return a LocalDate representation of the provided date string.
+     */
     public static LocalDate getLocalDateFromString(final String date, final String format)
     {
         final DateTimeFormatter formatter;
@@ -92,6 +99,14 @@ public class Common
         return LocalDate.parse(date, formatter);
     }
 
+    /**
+     * Converts a Customer object into a delimited string for saving to a text file.
+     * Fields are concatenated with the provided separator, and the join date is formatted.
+     *
+     * @param customer the Customer object to convert.
+     * @param separator the separator used between each field.
+     * @return a string representation of the customer suitable for file output.
+     */
     public static String getCustomerAsStringToWriteTextFile(final Customer customer, final String separator)
     {
         return customer.getId() + separator +

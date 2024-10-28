@@ -24,9 +24,10 @@ public class CustomerReport
     }
 
     /**
-     * Prints a formatted customer report to the console, including the duration of the report generation.
+     * Prints a formatted customer report to the console, displaying customer information
+     * with headings and a separator line.
      *
-     * @param customers an ArrayList of Customer objects to be included in the report.
+     * @param customers an ArrayList of Customer objects to be included in the report
      */
     public static void printCustomerReport(final ArrayList<Customer> customers)
     {
@@ -50,6 +51,14 @@ public class CustomerReport
         customers.forEach(System.out::println);
     }
 
+    /**
+     * Generates a formatted string of customer data sorted by either joined date or
+     * default order, and returns the generated report as a string.
+     *
+     * @param customers      an ArrayList of Customer objects to be included in the report
+     * @param sortByJoinedDate a boolean indicating whether to sort the report by joined date
+     * @return               a String representation of the formatted customer report
+     */
     public static String getCustomerReportSorted(final ArrayList<Customer> customers, final boolean sortByJoinedDate)
     {
         final StringBuilder customerReport = new StringBuilder();
@@ -92,6 +101,11 @@ public class CustomerReport
         System.out.println("Customer IDs:" + ids.toString());
     }
 
+    /**
+     * Returns the formatted header line for a customer report.
+     *
+     * @return a String representing the header of the customer report
+     */
     public static String getCustomerHeader()
     {
         return String.format(Customer.CUSTOMER_FORMAT,

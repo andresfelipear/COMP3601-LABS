@@ -18,15 +18,29 @@ public class CustomerDataManager
 {
     private final String fileName;
 
+    /**
+     * Constructs a CustomerDataManager with the specified file name.
+     *
+     * @param fileName the name of the file containing customer data
+     */
     public CustomerDataManager(final String fileName)
     {
         this.fileName = fileName;
     }
 
+    /**
+     * Updates the customer data in the specified file. If the customer's ID is found in the file,
+     * it replaces the existing entry with the new data for that customer.
+     *
+     * @param customer the Customer object containing updated information
+     */
     public void writeCustomerToFile(final Customer customer)
     {
         final StringBuilder       content;
-        content = new StringBuilder();
+        boolean                   writeFile;
+
+        writeFile = false;
+        content   = new StringBuilder();
 
         try(BufferedReader br = new BufferedReader(new FileReader(fileName));)
         {
@@ -37,6 +51,7 @@ public class CustomerDataManager
                 {
                     String customerString = Common.getCustomerAsStringToWriteTextFile(customer, "|");
                     content.append(customerString).append("\n");
+                    writeFile = true;
                 }
                 else
                 {
@@ -50,14 +65,17 @@ public class CustomerDataManager
             System.out.println("Error reading customers.dat");
         }
 
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName)))
+        if(writeFile)
         {
-            bw.write(content.toString());
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-            System.out.println("Error writing customers.dat");
+            try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName)))
+            {
+                bw.write(content.toString());
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                System.out.println("Error writing customers.dat");
+            }
         }
     }
 }
