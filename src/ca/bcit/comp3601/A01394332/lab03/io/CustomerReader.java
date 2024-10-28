@@ -22,7 +22,7 @@ public class CustomerReader
 {
     public static final String  SPLIT_CHAR_LINE;
     public static final String  FORMATTER_DATE;
-    private static final String SPLIT_CHAR_CUSTOMER_DETAILS;
+    public static final String SPLIT_CHAR_CUSTOMER_DETAILS;
     private static final Logger LOG;
 
     private final String stringOfFile;

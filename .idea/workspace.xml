@@ -10,18 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2c717396-a058-410f-9fe4-804c318b730a" name="Changes" comment="assignment01. Created basic GUI structure">
-      <change afterPath="$PROJECT_DIR$/customers.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/io/CustomerDataManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/Lab4.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/Lab4.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customers.dat" beforeDir="false" afterPath="$PROJECT_DIR$/customers.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/Lab4.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/Assignment01.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/data/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/data/Customer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/data/CustomerDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/data/CustomerDetails.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/data/util/Common.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/data/util/Common.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/data/util/Validator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/data/util/Validator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/database/CustomerDaoTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/database/CustomerDaoTester.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/database/dao/CustomerDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/database/dao/CustomerDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/io/CustomerGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/io/CustomerGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/io/CustomerReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/io/CustomerReader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/io/CustomerReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/bcit/comp3601/A01394332/lab03/io/CustomerReport.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +56,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Assignment01.executor": "Run",
     "Application.BasicLogging.executor": "Run",
     "Application.Lab03.executor": "Run",
     "Application.Lab4.executor": "Run",
@@ -67,7 +65,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "aarevalo-COMP3601-assignment01",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Documents/BCIT/Term4/COMP3601/solutions/3601_Lab03_Solution",
+    "last_opened_file_path": "D:/Documents/BCIT/Term4/COMP3601/COMP3601-LABS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -97,17 +95,9 @@
       <recent name="ca.bcit.comp3601.A01394332.lab03.logging.log4j" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Lab4">
-    <configuration name="Lab03" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="ca.bcit.comp3601.A01394332.lab03.Lab3" />
-      <module name="lab03" />
-      <option name="PROGRAM_PARAMETERS" value="&quot;1|Fred|Fish|5707 Sidley St|Burnaby|V5J 5E6|(604) 433 5004|fredfish@imperial.net|20080322:2|Laurie|Nash|2816 Commercial Dr|Vancouver|V5N 4C6|(604) 876 0182|laurieeenash@modern.com|20140828:3|Conrad|Washington|13479 King George Blvd|Surrey|V3T 2T8|(604) 588 4988|cwash@daytona.net|20110712:4|Jeanette|Price|21000 Westminster Hwy|Richmond|V6V 2S9|(604) 276 2552|priceizrite@pacific.com|20151003:5|Mark|Chan|3766 E 1st Ave|Burnaby|V5C 3V9|(604) 293 1022|mchan@mail.com|20100401&quot;" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Lab4" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ca.bcit.comp3601.A01394332.lab03.Lab4" />
+  <component name="RunManager" selected="Application.Assignment01">
+    <configuration name="Assignment01" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ca.bcit.comp3601.A01394332.lab03.Assignment01" />
       <module name="lab03" />
       <extension name="coverage">
         <pattern>
@@ -115,6 +105,14 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Lab03" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="ca.bcit.comp3601.A01394332.lab03.Lab3" />
+      <module name="lab03" />
+      <option name="PROGRAM_PARAMETERS" value="&quot;1|Fred|Fish|5707 Sidley St|Burnaby|V5J 5E6|(604) 433 5004|fredfish@imperial.net|20080322:2|Laurie|Nash|2816 Commercial Dr|Vancouver|V5N 4C6|(604) 876 0182|laurieeenash@modern.com|20140828:3|Conrad|Washington|13479 King George Blvd|Surrey|V3T 2T8|(604) 588 4988|cwash@daytona.net|20110712:4|Jeanette|Price|21000 Westminster Hwy|Richmond|V6V 2S9|(604) 276 2552|priceizrite@pacific.com|20151003:5|Mark|Chan|3766 E 1st Ave|Burnaby|V5C 3V9|(604) 293 1022|mchan@mail.com|20100401&quot;" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -134,12 +132,12 @@
     </configuration>
     <list>
       <item itemvalue="Application.Lab03" />
-      <item itemvalue="Application.Lab4" />
+      <item itemvalue="Application.Assignment01" />
       <item itemvalue="Application.LoggingConfiguration" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Lab4" />
+        <item itemvalue="Application.Assignment01" />
         <item itemvalue="Application.LoggingConfiguration" />
       </list>
     </recent_temporary>
@@ -170,6 +168,7 @@
       <workItem from="1729631479976" duration="337000" />
       <workItem from="1729835459676" duration="44000" />
       <workItem from="1729991949825" duration="21568000" />
+      <workItem from="1730064987914" duration="10538000" />
     </task>
     <task id="LOCAL-00001" summary="lab02 3601. Adding logging using Log4j">
       <option name="closed" value="true" />

@@ -40,6 +40,7 @@ public class CustomerGUI
     ArrayList<Customer> customers;
 
     private final CustomerDaoTester daoTester;
+    private final CustomerDataManager customerDataManager;
 
     final JFrame       frame;
     final JMenuBar     menuBar;
@@ -63,6 +64,8 @@ public class CustomerGUI
 
     boolean sortByJoinDate;
 
+    DefaultListModel<String> model;
+
     static
     {
         APP_NAME                   = "Customers GUI";
@@ -83,9 +86,11 @@ public class CustomerGUI
         HEIGHT_CUSTOMER_DETAILS_FRAME = 400;
     }
 
-    public CustomerGUI(final CustomerDaoTester daoTester) throws Exception
+    public CustomerGUI(final CustomerDaoTester daoTester, final String fileName) throws Exception
     {
         this.daoTester = daoTester;
+
+        customerDataManager = new CustomerDataManager(fileName);
 
         frame                = new JFrame(APP_NAME);
         menuBar              = new JMenuBar();
@@ -192,6 +197,43 @@ public class CustomerGUI
                 displayCustomersList();
             }
         });
+
+        aboutMenuItem.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(final ActionEvent e)
+            {
+                JOptionPane.showMessageDialog(frame, getGameInstructions(), "About", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+    }
+
+    /**
+     * Returns the game instructions.
+     *
+     * @return A string containing the game instructions.
+     */
+    private static String getGameInstructions()
+    {
+        return "Customers Management App\n" +
+                "COMP 3601 - Assignment 1\n\n" +
+                "Instructions:\n" +
+                "1) Data Management:\n" +
+                "   Each time the application is launched, the customer data is loaded from a text file into the database,\n" +
+                "   ensuring that if the customer table is dropped, it will be recreated with the original data on the next start.\n\n" +
+                "2) File Menu:\n" +
+                "   -Drop: Opens a confirmation dialog to drop all customer data.\n" +
+                "    If confirmed, the customer table will be deleted, and the program will exit.\n" +
+                "    When restarted, the data will reload.\n" +
+                "   -Quit: Closes the application.\n\n" +
+                "3) Customers Menu:\n" +
+                "   -Count: Shows the total number of customers in a dialog.\n" +
+                "   -By Join Date: If selected, lists customers sorted by their join date in ascending order.\n" +
+                "   -List: Opens a dialog displaying a list of all customers.\n" +
+                "    Selecting a customer in the list opens a detail view where information can be modified (except the ID).\n" +
+                "    Changes are saved to the database when 'OK' is pressed, or discarded if 'Cancel' is selected.\n\n" +
+                "4) Help Menu:\n" +
+                "   -About (F1): Opens this 'About' dialog to provide details about the application.";
     }
 
     private void displayCustomersList()
@@ -199,12 +241,12 @@ public class CustomerGUI
         final JLabel    header;
         final JPanel    buttonPanel;
         final JButton             okButton;
-        final ArrayList<Customer> customersCopy;
 
-        DefaultListModel<String> model = new DefaultListModel<>();
+        model = new DefaultListModel<>();
         JList<String> customerList = new JList<>(model);
-        customersCopy = new ArrayList<>();
 
+        final ArrayList<Customer> customersCopy;
+        customersCopy = new ArrayList<>();
         for(Customer customer : customers)
         {
             customersCopy.add(new Customer.Builder(customer.getId(), customer.getPhoneNumber())
@@ -228,11 +270,10 @@ public class CustomerGUI
         {
             model.addElement(customer.toString());
         }
-
+        
         customerList.addListSelectionListener(event -> {
             if (!event.getValueIsAdjusting()) {
                 String selectedCustomer = customerList.getSelectedValue();
-                System.out.println(selectedCustomer);
                 displayCustomerDetails(selectedCustomer);
             }
         });
@@ -396,7 +437,7 @@ public class CustomerGUI
             public void actionPerformed(final ActionEvent e)
             {
                 final Customer customerUpdated;
-                customerUpdated = new Customer.Builder(customerId, phoneNumber.getText())
+                customerUpdated = new Customer.Builder(id.getText(), phoneNumber.getText())
                         .firstName(firstName.getText())
                         .lastName(lastName.getText())
                         .streetName(streetName.getText())
@@ -410,13 +451,15 @@ public class CustomerGUI
                 {
                     daoTester.update(customerUpdated);
                     customers = daoTester.getCustomers();
-                    customerDetailsFrame.dispose();
-                    refreshCustomersFrame();
                 }
                 catch(Exception ex)
                 {
                     System.out.println(ex.getMessage());
                 }
+
+                customerDetailsFrame.dispose();
+                updateCustomersModel(customerUpdated);
+                customerDataManager.writeCustomerToFile(customerUpdated);
             }
         });
 
@@ -430,13 +473,20 @@ public class CustomerGUI
         });
     }
 
-    private void refreshCustomersFrame()
+    private void updateCustomersModel(final Customer customer)
     {
-
+        for(int i = 0; i < model.size(); i++)
+        {
+            String currentCustomer = model.getElementAt(i);
+            if(currentCustomer.contains(customer.getId()))
+            {
+                model.set(i, customer.toString());
+            }
+        }
     }
 
     private Customer getCustomerFromId(final String customerId)
-    {
+    {;
         for(final Customer customer : customers)
         {
             if(customer.getId().equals(customerId))

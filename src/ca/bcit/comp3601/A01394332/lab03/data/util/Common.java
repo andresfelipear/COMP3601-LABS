@@ -1,5 +1,6 @@
 package ca.bcit.comp3601.A01394332.lab03.data.util;
 
+import ca.bcit.comp3601.A01394332.lab03.data.Customer;
 import ca.bcit.comp3601.A01394332.lab03.data.CustomerDetails;
 import ca.bcit.comp3601.A01394332.lab03.io.CustomerReader;
 
@@ -89,5 +90,18 @@ public class Common
         formatter = DateTimeFormatter.ofPattern(format);
 
         return LocalDate.parse(date, formatter);
+    }
+
+    public static String getCustomerAsStringToWriteTextFile(final Customer customer, final String separator)
+    {
+        return customer.getId() + separator +
+                customer.getFirstName() + separator +
+                customer.getLastName() + separator +
+                customer.getStreetName() + separator +
+                customer.getCity() + separator +
+                customer.getPostalCode() + separator +
+                customer.getPhoneNumber() + separator +
+                customer.getEmail() + separator +
+                getDateFormatted(customer.getJoinDate(), "yyyyMMdd");
     }
 }

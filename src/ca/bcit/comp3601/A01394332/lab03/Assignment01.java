@@ -1,6 +1,5 @@
 package ca.bcit.comp3601.A01394332.lab03;
 
-import ca.bcit.comp3601.A01394332.lab03.data.ApplicationException;
 import ca.bcit.comp3601.A01394332.lab03.data.Customer;
 import ca.bcit.comp3601.A01394332.lab03.data.util.Common;
 import ca.bcit.comp3601.A01394332.lab03.database.CustomerDaoTester;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
  * @author Andres Arevalo
  * @version 1.0
  */
-public class Lab4
+public class Assignment01
 {
 
     private static final Logger LOG;
@@ -36,7 +35,7 @@ public class Lab4
     {
         LOG4J_CONFIG_FILENAME = "log4j2.xml";
         configureLogging();
-        LOG                   = LogManager.getLogger(Lab4.class);
+        LOG                   = LogManager.getLogger(Assignment01.class);
         CUSTOMER_FILE_NAME    = "customers.dat";
     }
 
@@ -79,7 +78,7 @@ public class Lab4
             customerDaoTester =  new CustomerDaoTester(dbPropertiesFile, customers);
             customerDaoTester.run();
 
-            new CustomerGUI(customerDaoTester);
+            new CustomerGUI(customerDaoTester, CUSTOMER_FILE_NAME);
         }
         catch(Exception e)
         {
