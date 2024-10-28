@@ -1,8 +1,6 @@
 package ca.bcit.comp3601.A01394332.lab03.data;
 
 import ca.bcit.comp3601.A01394332.lab03.data.util.Common;
-import ca.bcit.comp3601.A01394332.lab03.data.util.Validator;
-import ca.bcit.comp3601.A01394332.lab03.io.CustomerReader;
 
 import java.time.LocalDate;
 

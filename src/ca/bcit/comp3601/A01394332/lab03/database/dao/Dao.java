@@ -23,7 +23,6 @@ public abstract class Dao
 
 	/**
 	 * Abstract method to create a table in the database.
-	 *
 	 * This method should be implemented by derived classes to define the structure of the table.
 	 *
 	 * @throws SQLException If a database access error occurs or the creation fails.
@@ -32,7 +31,6 @@ public abstract class Dao
 
 	/**
 	 * Executes a SQL statement to create a table in the database.
-	 *
 	 * This method accepts a SQL statement to create a table, logs the SQL statement for debugging,
 	 * and then executes it using the database connection.
 	 *
@@ -53,7 +51,6 @@ public abstract class Dao
 
 	/**
 	 * Executes a SQL statement to add a new record to the database.
-	 *
 	 * This method accepts a SQL insert query, logs the SQL statement for debugging,
 	 * and executes the query to insert the new record.
 	 *
@@ -74,7 +71,6 @@ public abstract class Dao
 
 	/**
 	 * Drops the table from the database.
-	 *
 	 * This method constructs and executes a SQL statement to drop the table
 	 * associated with this Dao instance. The SQL statement is logged for debugging purposes.
 	 *
@@ -95,7 +91,6 @@ public abstract class Dao
 
 	/**
 	 * Closes the provided SQL statement.
-	 *
 	 * Ensures that the statement is closed after executing a database operation
 	 * to free up database resources. If closing the statement fails,
 	 * the SQLException is caught and printed.

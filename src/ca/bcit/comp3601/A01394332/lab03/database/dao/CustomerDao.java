@@ -41,7 +41,6 @@ public class CustomerDao extends Dao
 
     /**
      * Creates the customer table in the database if it doesn't already exist.
-     *
      * The table is created with the following columns:
      * - CUSTOMER_ID: The unique identifier for each customer.
      * - FIRST_NAME: The customer's first name.
@@ -52,7 +51,6 @@ public class CustomerDao extends Dao
      * - PHONE_NUMBER: The customer's phone number.
      * - EMAIL: The customer's email address.
      * - JOIN_DATE: The date the customer joined, formatted as yyyyMMdd.
-     *
      * This method logs the SQL statement for debugging purposes.
      *
      * @throws SQLException If a database access error occurs or the table creation fails.
@@ -89,7 +87,6 @@ public class CustomerDao extends Dao
 
     /**
      * Adds a new customer record to the customer table in the database.
-     *
      * The customer details are inserted into the table as follows:
      * - CUSTOMER_ID
      * - FIRST_NAME
@@ -100,7 +97,6 @@ public class CustomerDao extends Dao
      * - PHONE_NUMBER
      * - EMAIL
      * - JOIN_DATE
-     *
      * This method logs the SQL statement for debugging purposes.
      *
      * @param customer The customer object containing the details to be inserted.
@@ -146,11 +142,9 @@ public class CustomerDao extends Dao
 
     /**
      * Updates the details of an existing customer in the database.
-     *
      * The customer record is updated based on the customer's ID, and all other fields
      * (first name, last name, street, city, postal code, phone number, email, and join date)
      * are modified to match the provided customer object.
-     *
      * This method logs the SQL statement for debugging purposes.
      *
      * @param customer The customer object containing the updated details.
@@ -178,7 +172,7 @@ public class CustomerDao extends Dao
                                        CustomerDetails.CUSTOMER_ID.getName(), customer.getId());
             LOG.debug(sql);
             int rowcount = statement.executeUpdate(sql);
-            System.out.println(String.format("Updated %d rows", rowcount));
+            System.out.printf("Updated %d rows%n", rowcount);
         } finally
         {
             close(statement);
@@ -187,10 +181,8 @@ public class CustomerDao extends Dao
 
     /**
      * Deletes a customer record from the customer table in the database.
-     *
      * The customer is identified by their unique customer ID, and the corresponding record
      * is removed from the table.
-     *
      * This method logs the SQL statement for debugging purposes.
      *
      * @param customer The customer object whose record should be deleted.
@@ -207,7 +199,7 @@ public class CustomerDao extends Dao
             String sql = String.format("DELETE from %s WHERE %s='%s'", tableName, CustomerDetails.CUSTOMER_ID.getName(), customer.getId());
             LOG.debug(sql);
             int rowcount = statement.executeUpdate(sql);
-            System.out.println(String.format("Deleted %d rows", rowcount));
+            System.out.printf("Deleted %d rows%n", rowcount);
         } finally
         {
             close(statement);
@@ -216,10 +208,8 @@ public class CustomerDao extends Dao
 
     /**
      * Retrieves a list of all customer IDs from the customer table in the database.
-     *
      * This method queries the database for all customer IDs and returns them as a list.
      * It is useful for fetching the list of all customers' unique identifiers.
-     *
      * This method logs the SQL statement for debugging purposes.
      *
      * @return A list of customer IDs (as strings) from the database.
@@ -230,7 +220,7 @@ public class CustomerDao extends Dao
         List<String> customersIds = new ArrayList<>();
         Connection connection;
         Statement statement = null;
-        ResultSet resultSet = null;
+        ResultSet resultSet;
 
         try
         {
@@ -255,26 +245,21 @@ public class CustomerDao extends Dao
 
     /**
      * Retrieves a specific customer's details from the database based on their customer ID.
-     *
      * The method queries the database for the customer record with the given ID and constructs
      * a Customer object containing their details (ID, first name, last name, street, city, postal code,
      * phone number, email, and join date).
-     *
      * If more than one record is found for the given ID, an exception is thrown.
-     *
      * This method logs the SQL statement for debugging purposes.
      *
      * @param id The unique customer ID for which the details are to be retrieved.
      * @return The Customer object representing the customer's details.
-     * @throws SQLException If a database access error occurs or the query fails.
-     * @throws Exception If more than one result is returned for the given customer ID.
      */
-    public Customer getCustomer(final String id) throws SQLException, Exception
+    public Customer getCustomer(final String id)
     {
         Customer   customer  = null;
         Connection connection;
         Statement  statement = null;
-        ResultSet resultSet = null;
+        ResultSet resultSet;
 
         try
         {
@@ -315,17 +300,14 @@ public class CustomerDao extends Dao
         ArrayList<Customer> customers;
         Connection connection;
         Statement  statement = null;
-        ResultSet resultSet = null;
-
-        customers = new ArrayList<>();
+        ResultSet resultSet;
 
         try
         {
             connection = database.getConnection();
             statement = connection.createStatement();
             String sql = String.format("SELECT * from %s",
-                                       tableName,
-                                       CustomerDetails.CUSTOMER_ID.getName());
+                                       tableName);
             resultSet = statement.executeQuery(sql);
             customers = getCustomersFromResultSet(resultSet);
         }
